@@ -1,5 +1,10 @@
 var color = $(".selected").css("background-color");
+var $canvas = $("canvas");
 var $newColor  = $("#newColor");
+
+var context = $canvas[0].getContext("2d");
+var lastEvent;
+var mousedown=false;
 
 //When clicking the control list items
 $(".controls").on("click", "li", function(){
@@ -47,3 +52,22 @@ $("#addNewColor").click(function(){
 
 //on mouse events on the canvas
 	//Draw lines
+	$canvas.mousedown(function(e){
+		lastEvent=e;
+		mousedown=true;
+	}).mousemove(function(e){
+		if (mousedown){
+			context.beginPath();
+			context.moveTo(lastEvent.offsetX, lastEvent.offsetY);
+			context.lineTo(e.offsetX, e.offsetY);
+			context.strokeStyle=color;
+			context.stroke();
+			lastEvent=e;
+		}
+	}).mouseup(function(){
+		mousedown=false;
+	}).mouseleave(function(){
+		$canvas.mouseup();
+	})
+	context.beginPath();
+	context.moveTo();
